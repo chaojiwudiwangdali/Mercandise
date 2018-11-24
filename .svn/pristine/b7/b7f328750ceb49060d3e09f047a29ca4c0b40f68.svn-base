@@ -1,0 +1,66 @@
+package homework;
+
+public class Test {
+	public static void printMercandise(Mercandise[] mercandises){
+		for (Mercandise mercandise : mercandises) {
+			System.out.println("商品ID：" + mercandise.getId());
+			System.out.println("商品名：" + mercandise.getName());
+			System.out.println("商品单价：" + mercandise.getMoney());
+			System.out.println("商品数量：" + mercandise.getAmount());
+			System.out.println("商品状态：" + mercandise.isState());
+			System.out.println("----------------------------");
+		}
+	}
+	public static void main(String[] args) {
+		IFunctionDao ifd = new MercandiseManagerImpl(20);
+		Mercandise m1 = new Mercandise("1111","士力架",5,100,true);
+		Mercandise m2 = new Mercandise("2222","可口可乐",3,50,false);
+		Mercandise m3 = new Mercandise("3333","雪碧",3,50,true);
+		Mercandise m4 = new Mercandise("4444","乐事薯片",6,50,true);
+		Mercandise m5 = new Mercandise("5555","小浣熊",1,100,false);
+		Mercandise m6 = new Mercandise("6666","小当家",0.5,200,true);
+		Mercandise m7 = new Mercandise("7777","AD钙奶",6,60,true);
+		Mercandise m8 = new Mercandise("8888","爽歪歪",8,60,true);
+		ifd.save(m1);
+		ifd.save(m2);
+		ifd.save(m3);
+		ifd.save(m4);
+		ifd.save(m5);
+		ifd.save(m6);
+		ifd.save(m7);
+		ifd.save(m8);
+		printMercandise(ifd.queryAll());
+		ifd.delete("2222");
+		System.out.println("------delete------");
+		printMercandise(ifd.queryAll());
+		ifd.modById("3333", 3.5);
+		System.out.println("------modById------");
+		printMercandise(ifd.queryAll());
+		
+		System.out.println("------queryById-----");
+		Mercandise mer = ifd.queryById("6666");
+		if (null != mer) {
+			System.out.println("商品ID：" + mer.getId());
+			System.out.println("商品名：" + mer.getName());
+			System.out.println("商品单价：" + mer.getMoney());
+			System.out.println("商品数量：" + mer.getAmount());
+			System.out.println("商品状态：" + mer.isState());
+			System.out.println("----------------------------");
+		}
+		
+		System.out.println("-----queryByname-----");
+		Mercandise mer2 = ifd.queryByName("爽歪歪");
+		if (null != mer2) {
+			System.out.println("商品ID：" + mer2.getId());
+			System.out.println("商品名：" + mer2.getName());
+			System.out.println("商品单价：" + mer2.getMoney());
+			System.out.println("商品数量：" + mer2.getAmount());
+			System.out.println("商品状态：" + mer2.isState());
+			System.out.println("----------------------------");
+		}
+		
+		System.out.println("------queryByState-----");
+		Mercandise[] mers = ifd.queryByState(false);
+		printMercandise(mers);
+	}
+}

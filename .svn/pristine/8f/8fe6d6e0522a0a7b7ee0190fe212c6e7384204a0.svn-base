@@ -1,0 +1,134 @@
+package homework;
+
+public class MercandiseManagerImpl implements IFunctionDao{
+	private Mercandise[] mercandises;
+	private int index;
+
+	public MercandiseManagerImpl(){
+		mercandises = new Mercandise[10];
+	}
+	
+	public MercandiseManagerImpl(int size){
+		mercandises = new Mercandise[size];
+	}
+
+	@Override
+	public boolean save(Mercandise mer) {
+		if(index < mercandises.length){
+			mercandises[index] = mer;
+			index++;
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+
+	public boolean delete(String id) {
+		for(int i = 0; i < index;i++){
+			if(mercandises[i].getId().equals(id)){
+				for(int j = i;j < index-1;j++){
+					mercandises[j] = mercandises[j+1];
+				}
+				index--;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+
+	public Mercandise modById(String id,double money) {
+		for (int i = 0; i < index; i++) {
+			if (mercandises[i].getId().equals(id)) {
+				 mercandises[i].setMoney(money);
+			}
+		}
+		return null;
+	}
+	
+
+	@Override
+	public Mercandise[] queryAll() {
+		Mercandise[] m = new Mercandise[index];
+		System.arraycopy(mercandises, 0, m, 0, index);;
+		return m;
+	}
+
+	@Override
+	public Mercandise queryById(String id) {
+		for (int i = 0; i < index; i++) {
+			if (mercandises[i].getId().equals(id)) {
+				return mercandises[i];
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Mercandise queryByName(String name) {
+		for (int i = 0; i < index; i++) {
+			if (mercandises[i].getName().equals(name)) {
+				return mercandises[i];
+			}
+		}
+		return null;
+	}
+	@Override
+	public Mercandise[] queryByMoney(double money,double money2) {
+		int count = 0;
+		for (int i = 0 ; i < index;i++){
+			if (mercandises[i].getMoney() > money && mercandises[i].getMoney() < money2){
+				count++;
+			}
+		}
+		
+		if(0 == count) {
+			return null;
+		}
+		Mercandise[] mers = new Mercandise[count];
+		for (int i = 0; i < index ;i++){
+			if (mercandises[i].getMoney() > money && mercandises[i].getMoney() < money2){
+				mers[--count] = mercandises[i];
+			}
+		}
+		return mers;
+	}
+
+
+	@Override
+	public Mercandise[] queryByState(boolean state) {
+		int count = 0;
+		for (int i = 0 ; i < index;i++){
+			if (mercandises[i].isState() == state){
+				count++;
+			}
+		}
+		
+		if(0 == count) {
+			return null;
+		}
+		Mercandise[] mers = new Mercandise[count];
+		for (int i = 0; i < index ;i++){
+			if (mercandises[i].isState() == state){
+				mers[--count] = mercandises[i];
+			}
+		}
+		return mers;
+	}
+
+	@Override
+	public Mercandise[] sortByAmount() {
+		for (int j = 0; j < index-1; j++) {
+			for (int i = 0 ; i < index-1-j ; i++) {
+				if (mercandises[i].getAmount() > mercandises[i+1].getAmount()){
+					Mercandise temp = mercandises[i+1];
+					mercandises[i+1] = mercandises[i];
+					mercandises[i] = temp;
+				}
+			}
+		}
+		return mercandises;
+	}
+}
